@@ -43,7 +43,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
+        kotlinCompilerExtensionVersion = "1.5.4"
     }
     packaging {
         resources {
@@ -82,6 +82,5 @@ dependencies {
 
     implementation (libs.language.id)
     implementation (libs.translate)
-
 
 }

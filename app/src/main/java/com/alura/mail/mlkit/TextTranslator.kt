@@ -1,10 +1,10 @@
 package com.alura.mail.mlkit
 
 import android.util.Log
-import androidx.compose.runtime.mutableStateListOf
 import com.alura.mail.model.DownloadState
 import com.alura.mail.model.Language
 import com.alura.mail.model.LanguageModel
+import com.alura.mail.model.Message
 import com.alura.mail.util.FileUtil
 import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.common.model.RemoteModelManager
@@ -15,8 +15,8 @@ import com.google.mlkit.nl.translate.TranslateRemoteModel
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.TranslatorOptions
 
-
 class TextTranslator(private val fileUtil: FileUtil) {
+
     fun languageIdentifier(
         text: String,
         onSuccess: (Language) -> Unit = {},
@@ -178,6 +178,63 @@ class TextTranslator(private val fileUtil: FileUtil) {
                 onFailure()
             }
     }
+
+    fun messageListTranslate(
+        messageList: List<Message>,
+        onSuccess: (List<Message>) -> Unit = {},
+        sourceLanguage: String = TranslateLanguage.PORTUGUESE,
+        targetLanguage: String = TranslateLanguage.ENGLISH,
+    ) {
+        val textMessageList = mutableListOf<Message>()
+
+        val totalTexts = messageList.size
+        var textsTranslated = 0
+
+        messageList.forEach { (message, isLocalUser) ->
+            textTranslate(
+                text = message,
+                sourceLanguage = sourceLanguage,
+                targetLanguage = targetLanguage,
+                onSuccess = { translatedText ->
+                    textMessageList.add(
+                        Message(
+                            content = translatedText,
+                            isLocalUser = isLocalUser
+                        )
+                    )
+                    textsTranslated++
+                    if (textsTranslated == totalTexts) {
+                        onSuccess(textMessageList)
+                    }
+                }
+            )
+        }
+    }
+
+    fun listTranslate(
+        list: List<String>,
+        onSuccess: (List<String>) -> Unit = {},
+        sourceLanguage: String = TranslateLanguage.PORTUGUESE,
+        targetLanguage: String = TranslateLanguage.ENGLISH,
+    ) {
+        val translatedTextList = mutableListOf<String>()
+
+        val sizeList = list.size
+        var textsTranslated = 0
+
+        list.forEach { text ->
+            textTranslate(
+                text = text,
+                sourceLanguage = sourceLanguage,
+                targetLanguage = targetLanguage,
+                onSuccess = { translatedText ->
+                    translatedTextList.add(translatedText)
+                    textsTranslated++
+                    if (textsTranslated == sizeList) {
+                        onSuccess(translatedTextList)
+                    }
+                }
+            )
+        }
+    }
 }
-
-

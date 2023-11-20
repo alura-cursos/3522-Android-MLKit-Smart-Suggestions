@@ -1,13 +1,13 @@
 [versions]
-agp = "8.2.0-rc02"
-kotlin = "1.9.10"
+agp = "8.2.0-rc03"
+kotlin = "1.9.20"
 core-ktx = "1.12.0"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 language-id = "17.0.4"
 lifecycle-runtime-ktx = "2.6.2"
-activity-compose = "1.8.0"
+activity-compose = "1.8.1"
 compose-bom = "2023.10.01"
 translate = "17.0.2"
 viewmodel-compose = "2.6.2"
@@ -15,12 +15,10 @@ viewmodel-compose = "2.6.2"
 kotlinx-datetime = "0.4.1"
 navigation-compose = "2.7.5"
 
-ksp = "1.9.10-1.0.13"
+ksp = "1.9.20-1.0.13"
 dagger-compiler = "2.48"
 hilt-android = "2.48"
 hilt-navigation-compose = "1.1.0"
-
-
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -48,7 +46,6 @@ dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = 
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger-compiler" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
-
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
