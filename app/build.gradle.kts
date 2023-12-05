@@ -83,4 +83,6 @@ dependencies {
     implementation (libs.language.id)
     implementation (libs.translate)
 
+    implementation (libs.entity.extraction)
+
 }

@@ -1,5 +1,6 @@
 [versions]
 agp = "8.2.0-rc03"
+entity-extraction = "16.0.0-beta4"
 kotlin = "1.9.20"
 core-ktx = "1.12.0"
 junit = "4.13.2"
@@ -22,6 +23,7 @@ hilt-navigation-compose = "1.1.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+entity-extraction = { module = "com.google.mlkit:entity-extraction", version.ref = "entity-extraction" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 language-id = { module = "com.google.mlkit:language-id", version.ref = "language-id" }
 translate = { module = "com.google.mlkit:translate", version.ref = "translate" }
