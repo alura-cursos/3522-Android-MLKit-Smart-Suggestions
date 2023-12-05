@@ -42,6 +42,18 @@ class ContentEmailViewModel @Inject constructor(
     }
 
     private fun loadSmartActions() {
+
+        _uiState.value.selectedEmail?.let { email->
+            entityExtraction.extractSuggestions(
+                text = email.content,
+                onSuccess = {
+                    Log.i("loadSmartActions", "Entidades $it")
+                    _uiState.value = _uiState.value.copy(
+                        suggestions = entityExtraction.entityToSuggestionAction(it)
+                    )
+                }
+            )
+        }
     }
 
     private fun loadSmartSuggestions() {

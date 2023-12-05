@@ -14,6 +14,7 @@ class EntityExtractor {
     fun extractSuggestions(
         text: String,
         modelIdentifier: String = EntityExtractorOptions.PORTUGUESE,
+        onSuccess: (List<EntityInfo>) -> Unit,
     ) {
         val entityExtractor =
             EntityExtraction.getClient(
@@ -37,8 +38,9 @@ class EntityExtractor {
                             val action = getSuggestionActionByEntity(entity.entities.first().type)
 
                             EntityInfo(entityText, action)
-
                         }
+
+                        onSuccess(listEntityInfo)
 
                         // Annotation process was successful, you can parse the EntityAnnotations list here.
                     }
