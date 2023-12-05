@@ -76,29 +76,6 @@ class ContentEmailViewModel @Inject constructor(
             loadSmartActions()
             loadSmartSuggestions()
 
-            val entityExtractor =
-                EntityExtraction.getClient(
-                    EntityExtractorOptions.Builder(EntityExtractorOptions.ENGLISH)
-                        .build()
-                )
-
-            entityExtractor
-                .downloadModelIfNeeded()
-                .addOnSuccessListener { _ ->
-                    val params = EntityExtractionParams.Builder(email?.content ?: "").build()
-
-                    entityExtractor
-                        .annotate(params)
-                        .addOnSuccessListener {
-                            Log.i("EntityExtraction", "Entidades $it")
-                            // Annotation process was successful, you can parse the EntityAnnotations list here.
-                        }
-                        .addOnFailureListener {
-                            // Check failure message here.
-                        }
-                }
-                .addOnFailureListener { _ -> /* Model downloading failed. */ }
-
             identifyEmailLanguage()
             identifyLocalLanguage()
         }

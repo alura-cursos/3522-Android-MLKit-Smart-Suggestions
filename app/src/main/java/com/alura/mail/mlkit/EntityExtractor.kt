@@ -1,11 +1,53 @@
 package com.alura.mail.mlkit
 
+import android.util.Log
 import com.alura.mail.R
 import com.alura.mail.model.EntityInfo
 import com.alura.mail.model.Suggestion
 import com.alura.mail.model.SuggestionAction
+import com.google.mlkit.nl.entityextraction.EntityExtraction
+import com.google.mlkit.nl.entityextraction.EntityExtractionParams
+import com.google.mlkit.nl.entityextraction.EntityExtractorOptions
 
 class EntityExtractor {
+
+    fun extractSuggestions(
+        text: String,
+        modelIdentifier: String = EntityExtractorOptions.PORTUGUESE,
+    ) {
+        val entityExtractor =
+            EntityExtraction.getClient(
+                EntityExtractorOptions.Builder(modelIdentifier)
+                    .build()
+            )
+
+        entityExtractor
+            .downloadModelIfNeeded()
+            .addOnSuccessListener { _ ->
+                val params = EntityExtractionParams.Builder(text).build()
+
+                entityExtractor
+                    .annotate(params)
+                    .addOnSuccessListener { entities ->
+                        Log.i("EntityExtraction", "Entidades $entities")
+
+                        val listEntityInfo: List<EntityInfo> = entities.map { entity ->
+                            val entityText = text.substring(entity.start, entity.end)
+
+                            val action = getSuggestionActionByEntity(entity.entities.first().type)
+
+                            EntityInfo(entityText, action)
+
+                        }
+
+                        // Annotation process was successful, you can parse the EntityAnnotations list here.
+                    }
+                    .addOnFailureListener {
+                        // Check failure message here.
+                    }
+            }
+            .addOnFailureListener { _ -> /* Model downloading failed. */ }
+    }
 
     fun entityToSuggestionAction(entities: List<EntityInfo>): List<Suggestion> {
         return entities.map { entity ->
