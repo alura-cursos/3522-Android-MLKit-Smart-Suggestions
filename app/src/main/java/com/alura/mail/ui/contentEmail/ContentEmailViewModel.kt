@@ -13,6 +13,9 @@ import com.alura.mail.model.Suggestion
 import com.alura.mail.model.SuggestionAction
 import com.alura.mail.samples.EmailDao
 import com.alura.mail.ui.navigation.emailIdArgument
+import com.google.mlkit.nl.entityextraction.EntityExtraction
+import com.google.mlkit.nl.entityextraction.EntityExtractionParams
+import com.google.mlkit.nl.entityextraction.EntityExtractorOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -72,6 +75,29 @@ class ContentEmailViewModel @Inject constructor(
             )
             loadSmartActions()
             loadSmartSuggestions()
+
+            val entityExtractor =
+                EntityExtraction.getClient(
+                    EntityExtractorOptions.Builder(EntityExtractorOptions.ENGLISH)
+                        .build()
+                )
+
+            entityExtractor
+                .downloadModelIfNeeded()
+                .addOnSuccessListener { _ ->
+                    val params = EntityExtractionParams.Builder(email?.content ?: "").build()
+
+                    entityExtractor
+                        .annotate(params)
+                        .addOnSuccessListener {
+                            Log.i("EntityExtraction", "Entidades $it")
+                            // Annotation process was successful, you can parse the EntityAnnotations list here.
+                        }
+                        .addOnFailureListener {
+                            // Check failure message here.
+                        }
+                }
+                .addOnFailureListener { _ -> /* Model downloading failed. */ }
 
             identifyEmailLanguage()
             identifyLocalLanguage()
