@@ -46,10 +46,11 @@ class ContentEmailViewModel @Inject constructor(
         _uiState.value.selectedEmail?.let { email->
             entityExtraction.extractSuggestions(
                 text = email.content,
-                onSuccess = {
-                    Log.i("loadSmartActions", "Entidades $it")
+                onSuccess = { listEntityInfo, listRanges ->
+                    Log.i("loadSmartActions", "Entidades $listEntityInfo")
                     _uiState.value = _uiState.value.copy(
-                        suggestions = entityExtraction.entityToSuggestionAction(it)
+                        suggestions = entityExtraction.entityToSuggestionAction(listEntityInfo),
+                        rangeList = listRanges
                     )
                 }
             )

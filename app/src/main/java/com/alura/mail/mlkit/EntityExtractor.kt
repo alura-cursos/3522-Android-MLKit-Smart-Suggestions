@@ -14,7 +14,7 @@ class EntityExtractor {
     fun extractSuggestions(
         text: String,
         modelIdentifier: String = EntityExtractorOptions.PORTUGUESE,
-        onSuccess: (List<EntityInfo>) -> Unit,
+        onSuccess: (List<EntityInfo>, List<IntRange>) -> Unit,
     ) {
         val entityExtractor =
             EntityExtraction.getClient(
@@ -41,8 +41,9 @@ class EntityExtractor {
                         }
 
                         val entitiesRanges: List<IntRange> = entities.map { it.start..it.end }
+                        Log.i("EntityExtraction", "Entidades $entitiesRanges")
 
-                        onSuccess(listEntityInfo)
+                        onSuccess(listEntityInfo, entitiesRanges)
 
                         // Annotation process was successful, you can parse the EntityAnnotations list here.
                     }
