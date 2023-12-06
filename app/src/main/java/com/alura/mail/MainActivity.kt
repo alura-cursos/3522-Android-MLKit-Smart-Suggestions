@@ -28,8 +28,6 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
                     HomeNavHost(navController = navController)
-
-
                 }
             }
         }

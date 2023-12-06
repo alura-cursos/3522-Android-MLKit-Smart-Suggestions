@@ -75,6 +75,15 @@ class ContentEmailViewModel @Inject constructor(
                 )
             }
 
+            responseGenerator.generateResponse(
+                listMessages =  conversation,
+                onSuccess = { smartReplies ->
+                    _uiState.value = _uiState.value.copy(
+                        suggestions = responseGenerator.messageToSuggestionAction(smartReplies)
+                    )
+                }
+            )
+
         }
     }
 
@@ -86,7 +95,7 @@ class ContentEmailViewModel @Inject constructor(
                 originalContent = email?.content,
                 originalSubject = email?.subject
             )
-            loadSmartActions()
+            //loadSmartActions()
             loadSmartSuggestions()
 
             identifyEmailLanguage()
