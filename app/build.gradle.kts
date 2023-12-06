@@ -84,5 +84,6 @@ dependencies {
     implementation (libs.translate)
 
     implementation (libs.entity.extraction)
+    implementation (libs.smart.reply)
 
 }

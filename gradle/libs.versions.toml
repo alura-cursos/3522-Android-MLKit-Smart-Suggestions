@@ -26,6 +26,7 @@ core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx
 entity-extraction = { module = "com.google.mlkit:entity-extraction", version.ref = "entity-extraction" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 language-id = { module = "com.google.mlkit:language-id", version.ref = "language-id" }
+smart-reply = { module = "com.google.mlkit:smart-reply", version.ref = "translate" }
 translate = { module = "com.google.mlkit:translate", version.ref = "translate" }
 viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "viewmodel-compose" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
