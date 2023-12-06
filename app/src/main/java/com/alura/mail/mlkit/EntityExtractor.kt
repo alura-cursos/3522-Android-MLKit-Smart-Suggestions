@@ -40,6 +40,8 @@ class EntityExtractor {
                             EntityInfo(entityText, action)
                         }
 
+                        val entitiesRanges: List<IntRange> = entities.map { it.start..it.end }
+
                         onSuccess(listEntityInfo)
 
                         // Annotation process was successful, you can parse the EntityAnnotations list here.
