@@ -11,26 +11,32 @@ class ResponseGenerator {
 
     fun generateResponse(
         listMessages: List<Message>,
-        onSuccess: (List<String>) -> Unit
+        onSuccess: (List<String>) -> Unit,
+        onFailure: () -> Unit
     ) {
         val conversation = listMessages.map { message ->
-            if(message.isLocalUser) {
+            if (message.isLocalUser) {
                 TextMessage.createForLocalUser(message.content, System.currentTimeMillis())
             } else {
-                TextMessage.createForRemoteUser(message.content, System.currentTimeMillis(), "userId")
+                TextMessage.createForRemoteUser(
+                    message.content,
+                    System.currentTimeMillis(),
+                    "userId"
+                )
             }
 
         }
         val smartReply = SmartReply.getClient()
         smartReply.suggestReplies(conversation)
             .addOnSuccessListener { result ->
-                if (result.getStatus() == SmartReplySuggestionResult.STATUS_NOT_SUPPORTED_LANGUAGE) {
-                    // The conversation's language isn't supported, so
-                    // the result doesn't contain any suggestions.
-                } else if (result.getStatus() == SmartReplySuggestionResult.STATUS_SUCCESS) {
+                if (result.status == SmartReplySuggestionResult.STATUS_NOT_SUPPORTED_LANGUAGE) {
+                    onFailure()
+                } else if (result.status == SmartReplySuggestionResult.STATUS_SUCCESS) {
                     val responses: List<String> = result.suggestions.map { it.text }
                     onSuccess(responses)
                 }
+            }.addOnCompleteListener {
+                onFailure()
             }
     }
 

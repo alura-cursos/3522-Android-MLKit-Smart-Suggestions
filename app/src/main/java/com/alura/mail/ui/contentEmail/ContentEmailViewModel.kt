@@ -49,7 +49,7 @@ class ContentEmailViewModel @Inject constructor(
                 onSuccess = { listEntityInfo, listRanges ->
                     Log.i("loadSmartActions", "Entidades $listEntityInfo")
                     _uiState.value = _uiState.value.copy(
-                        suggestions = entityExtraction.entityToSuggestionAction(listEntityInfo),
+                        suggestions =_uiState.value.suggestions + entityExtraction.entityToSuggestionAction(listEntityInfo),
                         rangeList = listRanges
                     )
                 }
@@ -81,6 +81,10 @@ class ContentEmailViewModel @Inject constructor(
                     _uiState.value = _uiState.value.copy(
                         suggestions = responseGenerator.messageToSuggestionAction(smartReplies)
                     )
+                    loadSmartActions()
+                },
+                onFailure = {
+                    loadSmartActions()
                 }
             )
 
@@ -95,7 +99,6 @@ class ContentEmailViewModel @Inject constructor(
                 originalContent = email?.content,
                 originalSubject = email?.subject
             )
-            //loadSmartActions()
             loadSmartSuggestions()
 
             identifyEmailLanguage()
