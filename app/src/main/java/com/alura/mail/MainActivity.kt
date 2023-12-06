@@ -29,24 +29,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     HomeNavHost(navController = navController)
 
-                    val conversation = mutableListOf<TextMessage>()
-                    conversation.add(
-                        TextMessage.createForLocalUser(
-                        "Hello, Good Morning", System.currentTimeMillis()))
 
-                    val smartReply = SmartReply.getClient()
-                    smartReply.suggestReplies(conversation)
-                        .addOnSuccessListener { result ->
-                            if (result.getStatus() == SmartReplySuggestionResult.STATUS_NOT_SUPPORTED_LANGUAGE) {
-                                // The conversation's language isn't supported, so
-                                // the result doesn't contain any suggestions.
-                            } else if (result.getStatus() == SmartReplySuggestionResult.STATUS_SUCCESS) {
-                                for (suggestion in result.suggestions) {
-                                    val replyText = suggestion.text
-                                    Log.i("SmartReply", replyText)
-                                }
-                            }
-                        }
                 }
             }
         }
