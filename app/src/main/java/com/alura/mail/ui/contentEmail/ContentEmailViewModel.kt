@@ -43,13 +43,15 @@ class ContentEmailViewModel @Inject constructor(
 
     private fun loadSmartActions() {
 
-        _uiState.value.selectedEmail?.let { email->
+        _uiState.value.selectedEmail?.let { email ->
             entityExtraction.extractSuggestions(
                 text = email.content,
                 onSuccess = { listEntityInfo, listRanges ->
                     Log.i("loadSmartActions", "Entidades $listEntityInfo")
                     _uiState.value = _uiState.value.copy(
-                        suggestions =_uiState.value.suggestions + entityExtraction.entityToSuggestionAction(listEntityInfo),
+                        suggestions = _uiState.value.suggestions + entityExtraction.entityToSuggestionAction(
+                            listEntityInfo
+                        ),
                         rangeList = listRanges
                     )
                 }
@@ -75,18 +77,27 @@ class ContentEmailViewModel @Inject constructor(
                 )
             }
 
-            responseGenerator.generateResponse(
-                listMessages =  conversation,
-                onSuccess = { smartReplies ->
-                    _uiState.value = _uiState.value.copy(
-                        suggestions = responseGenerator.messageToSuggestionAction(smartReplies)
+            textTranslator.messageListTranslate(
+                messageList = conversation,
+                sourceLanguage = _uiState.value.languageIdentified?.code.toString(),
+                onSuccess = { translatedConversation ->
+                    responseGenerator.generateResponse(
+                        listMessages = translatedConversation,
+                        onSuccess = { smartReplies ->
+                            _uiState.value = _uiState.value.copy(
+                                suggestions = responseGenerator.messageToSuggestionAction(
+                                    smartReplies
+                                )
+                            )
+                            loadSmartActions()
+                        },
+                        onFailure = {
+                            loadSmartActions()
+                        }
                     )
-                    loadSmartActions()
-                },
-                onFailure = {
-                    loadSmartActions()
                 }
             )
+
 
         }
     }
@@ -99,7 +110,6 @@ class ContentEmailViewModel @Inject constructor(
                 originalContent = email?.content,
                 originalSubject = email?.subject
             )
-            loadSmartSuggestions()
 
             identifyEmailLanguage()
             identifyLocalLanguage()
@@ -115,7 +125,11 @@ class ContentEmailViewModel @Inject constructor(
                         languageIdentified = language
                     )
                     verifyIfNeedTranslate()
+                    loadSmartSuggestions()
                 },
+                onFailure = {
+                    loadSmartSuggestions()
+                }
             )
         }
     }
