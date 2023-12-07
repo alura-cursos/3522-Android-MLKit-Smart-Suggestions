@@ -13,9 +13,7 @@ import com.alura.mail.model.Suggestion
 import com.alura.mail.model.SuggestionAction
 import com.alura.mail.samples.EmailDao
 import com.alura.mail.ui.navigation.emailIdArgument
-import com.google.mlkit.nl.entityextraction.EntityExtraction
-import com.google.mlkit.nl.entityextraction.EntityExtractionParams
-import com.google.mlkit.nl.entityextraction.EntityExtractorOptions
+import com.google.mlkit.nl.translate.TranslateLanguage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -84,12 +82,20 @@ class ContentEmailViewModel @Inject constructor(
                     responseGenerator.generateResponse(
                         listMessages = translatedConversation,
                         onSuccess = { smartReplies ->
-                            _uiState.value = _uiState.value.copy(
-                                suggestions = responseGenerator.messageToSuggestionAction(
-                                    smartReplies
-                                )
+
+                            textTranslator.listTranslate(
+                                list = smartReplies,
+                                sourceLanguage = TranslateLanguage.ENGLISH,
+                                targetLanguage = _uiState.value.languageIdentified?.code.toString(),
+                                onSuccess = { translatedSmartReplies ->
+                                    _uiState.value = _uiState.value.copy(
+                                        suggestions = responseGenerator.messageToSuggestionAction(
+                                            translatedSmartReplies
+                                        )
+                                    )
+                                    loadSmartActions()
+                                }
                             )
-                            loadSmartActions()
                         },
                         onFailure = {
                             loadSmartActions()
