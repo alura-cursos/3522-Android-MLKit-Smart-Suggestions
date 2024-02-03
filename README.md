@@ -63,7 +63,7 @@ Após baixar o projeto, você pode abri-lo com o Android Studio. Para isso, na t
 
 ## 📚 Mais informações do curso
 
-Gostou do projeto e quer conhecer mais? Você pode [acessar o curso](https://www.alura.com.br/curso-online-android-ia-google-ml-kit-traducao-textos) que desenvolve o projeto desde o começo!
+Gostou do projeto e quer conhecer mais? Você pode [acessar o curso](https://www.alura.com.br/curso-online-android-ia-extraindo-entidades-gerando-respostas-inteligentes-ml-kit) que desenvolve o projeto desde o começo!
 
 [codigo-inicial]: https://github.com/alura-cursos/3522-Android-MLKit-Smart-Suggestions
 [download-inicial]: https://github.com/alura-cursos/3522-Android-MLKit-Smart-Suggestions/archive/refs/heads/projeto-base.zip
